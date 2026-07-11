@@ -21,9 +21,11 @@ class TaskController extends Controller
     {
         $filters = $request->validated();
 
-        $tasks = Task::query()
+        $query = Task::query()
             ->search($filters['search'] ?? null)
-            ->status($filters['status'] ?? null)
+            ->status($filters['status'] ?? null);
+
+        $tasks = (clone $query)
             ->latest('created_at')
             ->paginate($filters['per_page'] ?? 10)
             ->withQueryString();
@@ -31,6 +33,12 @@ class TaskController extends Controller
         return TaskResource::collection($tasks)
             ->additional([
                 'message' => 'Tasks retrieved successfully.',
+                'summary' => [
+                    'total' => Task::query()->count(),
+                    'completed' => Task::query()->where('is_completed', true)->count(),
+                    'pending' => Task::query()->where('is_completed', false)->count(),
+                    'filtered' => $tasks->total(),
+                ],
             ])
             ->response();
     }

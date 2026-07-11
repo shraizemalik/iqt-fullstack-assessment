@@ -72,37 +72,15 @@ export function TaskDashboardPage() {
       }
 
       try {
-        const [response, totalResponse, completedResponse, pendingResponse] = await Promise.all([
-          getTasks(
-            {
-              page: pagination.current_page,
-              per_page: pagination.per_page,
-              search: searchQuery || undefined,
-              status: statusFilter === 'all' ? undefined : statusFilter,
-            },
-            controller.signal,
-          ),
-          getTasks(
-            {
-              per_page: 1,
-            },
-            controller.signal,
-          ),
-          getTasks(
-            {
-              per_page: 1,
-              status: 'completed',
-            },
-            controller.signal,
-          ),
-          getTasks(
-            {
-              per_page: 1,
-              status: 'pending',
-            },
-            controller.signal,
-          ),
-        ])
+        const response = await getTasks(
+          {
+            page: pagination.current_page,
+            per_page: pagination.per_page,
+            search: searchQuery || undefined,
+            status: statusFilter === 'all' ? undefined : statusFilter,
+          },
+          controller.signal,
+        )
 
         setTasks(response.data)
         setPagination((current) => ({
@@ -110,9 +88,9 @@ export function TaskDashboardPage() {
           ...response.meta,
         }))
         setSummary({
-          total: totalResponse.meta.total,
-          completed: completedResponse.meta.total,
-          pending: pendingResponse.meta.total,
+          total: response.summary.total,
+          completed: response.summary.completed,
+          pending: response.summary.pending,
         })
         hasLoadedOnceRef.current = true
       } catch (error) {
@@ -309,6 +287,7 @@ export function TaskDashboardPage() {
             ? {
                 ...entry,
                 is_completed: !entry.is_completed,
+                updated_at: new Date().toISOString(),
               }
             : entry,
         ),

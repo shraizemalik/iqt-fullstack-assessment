@@ -41,7 +41,7 @@ export function Modal({ children, isOpen, onClose, title, description }) {
             {description ? <p id="modal-description">{description}</p> : null}
           </div>
           <button className="modal__close" type="button" onClick={onClose} aria-label="Close dialog">
-            ×
+            Close
           </button>
         </header>
         <div className="modal__body">{children}</div>

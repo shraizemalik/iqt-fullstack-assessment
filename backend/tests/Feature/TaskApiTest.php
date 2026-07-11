@@ -32,6 +32,10 @@ class TaskApiTest extends TestCase
         $response
             ->assertOk()
             ->assertJsonPath('message', 'Tasks retrieved successfully.')
+            ->assertJsonPath('summary.total', 3)
+            ->assertJsonPath('summary.completed', 1)
+            ->assertJsonPath('summary.pending', 2)
+            ->assertJsonPath('summary.filtered', 1)
             ->assertJsonCount(1, 'data')
             ->assertJsonPath('data.0.title', 'Write API documentation')
             ->assertJsonStructure([
@@ -39,6 +43,7 @@ class TaskApiTest extends TestCase
                 'links',
                 'meta',
                 'message',
+                'summary',
             ]);
     }
 
