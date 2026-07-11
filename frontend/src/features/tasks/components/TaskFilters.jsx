@@ -16,8 +16,8 @@ export function TaskFilters({
     <section className="panel filters-panel">
       <div className="filters-panel__header">
         <div>
-          <span className="eyebrow">Task overview</span>
-          <h2>Track work with a clean, focused flow</h2>
+          <span className="eyebrow">Task list</span>
+          <h2>Search and filter your tasks</h2>
         </div>
         <span className={`sync-indicator${isRefreshing ? ' is-active' : ''}`}>
           {isRefreshing ? 'Refreshing...' : 'Up to date'}

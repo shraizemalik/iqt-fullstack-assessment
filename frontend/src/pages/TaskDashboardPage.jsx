@@ -5,6 +5,7 @@ import { EmptyState } from '../components/ui/EmptyState'
 import { NotificationList } from '../components/ui/NotificationList'
 import { Pagination } from '../components/ui/Pagination'
 import { DeleteTaskDialog } from '../features/tasks/components/DeleteTaskDialog'
+import { SummaryCards } from '../features/tasks/components/SummaryCards'
 import { TaskFilters } from '../features/tasks/components/TaskFilters'
 import { TaskFormDialog } from '../features/tasks/components/TaskFormDialog'
 import { TaskList } from '../features/tasks/components/TaskList'
@@ -24,6 +25,11 @@ export function TaskDashboardPage() {
     total: 0,
     from: 0,
     to: 0,
+  })
+  const [summary, setSummary] = useState({
+    total: 0,
+    completed: 0,
+    pending: 0,
   })
   const [isInitialLoading, setIsInitialLoading] = useState(true)
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -65,21 +71,48 @@ export function TaskDashboardPage() {
       }
 
       try {
-        const response = await getTasks(
-          {
-            page: pagination.current_page,
-            per_page: pagination.per_page,
-            search: searchQuery || undefined,
-            status: statusFilter === 'all' ? undefined : statusFilter,
-          },
-          controller.signal,
-        )
+        const [response, totalResponse, completedResponse, pendingResponse] = await Promise.all([
+          getTasks(
+            {
+              page: pagination.current_page,
+              per_page: pagination.per_page,
+              search: searchQuery || undefined,
+              status: statusFilter === 'all' ? undefined : statusFilter,
+            },
+            controller.signal,
+          ),
+          getTasks(
+            {
+              per_page: 1,
+            },
+            controller.signal,
+          ),
+          getTasks(
+            {
+              per_page: 1,
+              status: 'completed',
+            },
+            controller.signal,
+          ),
+          getTasks(
+            {
+              per_page: 1,
+              status: 'pending',
+            },
+            controller.signal,
+          ),
+        ])
 
         setTasks(response.data)
         setPagination((current) => ({
           ...current,
           ...response.meta,
         }))
+        setSummary({
+          total: totalResponse.meta.total,
+          completed: completedResponse.meta.total,
+          pending: pendingResponse.meta.total,
+        })
         hasLoadedOnceRef.current = true
       } catch (error) {
         if (isRequestCanceled(error)) {
@@ -279,6 +312,11 @@ export function TaskDashboardPage() {
             : entry,
         ),
       )
+      setSummary((current) => ({
+        ...current,
+        completed: task.is_completed ? current.completed - 1 : current.completed + 1,
+        pending: task.is_completed ? current.pending + 1 : current.pending - 1,
+      }))
     } catch (error) {
       pushNotification({
         type: 'error',
@@ -294,27 +332,43 @@ export function TaskDashboardPage() {
     <main className="app-shell">
       <NotificationList notifications={notifications} onDismiss={dismissNotification} />
 
-      <section className="hero panel">
-        <div className="hero__content">
-          <span className="eyebrow">Task Management System</span>
-          <h1>Professional task tracking with a practical, polished workflow.</h1>
-          <p>
-            Manage day-to-day work with fast task updates, clear status handling,
-            and a backend-connected interface built for real product teams.
-          </p>
-        </div>
-        <div className="hero__meta">
+      <header className="topbar panel">
+        <div className="topbar__brand">
+          <span className="topbar__logo">TM</span>
           <div>
-            <span>Total tasks</span>
-            <strong>{pagination.total}</strong>
+            <strong>Task Manager</strong>
+            <p>Laravel + React assessment project</p>
           </div>
-          <div>
+        </div>
+        <nav className="topbar__nav" aria-label="Primary">
+          <a className="topbar__link topbar__link--active" href="#tasks">
+            Task Manager
+          </a>
+          <a className="topbar__link" href="#github-explorer">
+            GitHub Explorer
+          </a>
+          <a className="topbar__link" href="#repository">
+            GitHub Repository
+          </a>
+        </nav>
+      </header>
+
+      <section id="tasks" className="hero panel">
+        <div className="hero__content">
+          <span className="eyebrow">Overview</span>
+          <h1>Task Management System</h1>
+          <p>Organize, track, and complete your daily tasks.</p>
+        </div>
+        <div className="hero__actions">
+          <div className="hero__status">
             <span>Current filter</span>
             <strong>{statusFilter === 'all' ? 'All tasks' : `${statusFilter} tasks`}</strong>
           </div>
           <Button onClick={openCreateDialog}>Add new task</Button>
         </div>
       </section>
+
+      <SummaryCards summary={summary} />
 
       <TaskFilters
         resultsLabel={resultsLabel}
