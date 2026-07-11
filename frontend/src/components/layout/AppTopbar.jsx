@@ -7,7 +7,7 @@ export function AppTopbar({ activePage }) {
         <span className="topbar__logo">TM</span>
         <div>
           <strong>Task Manager</strong>
-          <p>Laravel 11 | React | MySQL</p>
+          <p>Organize daily work and explore GitHub profiles.</p>
         </div>
       </div>
       <nav className="topbar__nav" aria-label="Primary">

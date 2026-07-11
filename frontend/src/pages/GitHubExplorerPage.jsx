@@ -86,7 +86,7 @@ export function GitHubExplorerPage() {
               type="text"
               value={username}
               onChange={(event) => setUsername(event.target.value)}
-              placeholder="octocat"
+              placeholder="Enter a GitHub username"
               aria-invalid={validationMessage ? 'true' : 'false'}
               aria-describedby={validationMessage ? 'github-username-error' : undefined}
             />

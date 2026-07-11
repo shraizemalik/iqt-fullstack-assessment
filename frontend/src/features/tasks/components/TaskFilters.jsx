@@ -31,7 +31,7 @@ export function TaskFilters({
             type="search"
             value={searchValue}
             onChange={(event) => onSearchChange(event.target.value)}
-            placeholder="Search by title or description"
+            placeholder="Search tasks"
           />
         </label>
         <div className="field">

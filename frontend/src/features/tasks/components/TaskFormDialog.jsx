@@ -99,7 +99,7 @@ export function TaskFormDialog({
             type="text"
             value={form.title}
             onChange={handleChange('title')}
-            placeholder="Prepare sprint demo"
+            placeholder="Enter task title"
             maxLength={255}
           />
           {errors.title ? <small className="field-error">{errors.title[0]}</small> : null}
@@ -111,7 +111,7 @@ export function TaskFormDialog({
             className={`input input--textarea${errors.description ? ' input--error' : ''}`}
             value={form.description}
             onChange={handleChange('description')}
-            placeholder="Add any relevant context, next steps, or deadlines."
+            placeholder="Add a short description"
             rows={5}
           />
           {errors.description ? <small className="field-error">{errors.description[0]}</small> : null}
