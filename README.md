@@ -167,7 +167,7 @@ Then update the frontend environment values if needed:
 
 ```env
 VITE_API_BASE_URL=http://127.0.0.1:8000/api/v1
-VITE_REPOSITORY_URL=<YOUR_PUBLIC_REPOSITORY_URL>
+VITE_REPOSITORY_URL=https://github.com/shraizemalik/iqt-fullstack-assessment.git
 ```
 
 ### 7. Start the React frontend
