@@ -76,10 +76,8 @@ iqt-fullstack-assessment/
 
 ### 1. Clone the repository
 
-Update this placeholder before sharing the project publicly:
-
 ```bash
-git clone <YOUR_REPOSITORY_URL>
+git clone https://github.com/shraizemalik/iqt-fullstack-assessment.git
 cd iqt-fullstack-assessment
 ```
 
