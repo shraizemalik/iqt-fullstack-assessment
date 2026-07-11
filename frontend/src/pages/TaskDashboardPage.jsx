@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 
+import { AppTopbar } from '../components/layout/AppTopbar'
 import { Button } from '../components/ui/Button'
 import { EmptyState } from '../components/ui/EmptyState'
 import { NotificationList } from '../components/ui/NotificationList'
@@ -332,26 +333,7 @@ export function TaskDashboardPage() {
     <main className="app-shell">
       <NotificationList notifications={notifications} onDismiss={dismissNotification} />
 
-      <header className="topbar panel">
-        <div className="topbar__brand">
-          <span className="topbar__logo">TM</span>
-          <div>
-            <strong>Task Manager</strong>
-            <p>Laravel + React assessment project</p>
-          </div>
-        </div>
-        <nav className="topbar__nav" aria-label="Primary">
-          <a className="topbar__link topbar__link--active" href="#tasks">
-            Task Manager
-          </a>
-          <a className="topbar__link" href="#github-explorer">
-            GitHub Explorer
-          </a>
-          <a className="topbar__link" href="#repository">
-            GitHub Repository
-          </a>
-        </nav>
-      </header>
+      <AppTopbar activePage="tasks" />
 
       <section id="tasks" className="hero panel">
         <div className="hero__content">

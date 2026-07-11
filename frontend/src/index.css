@@ -459,6 +459,10 @@ a {
   color: white;
 }
 
+.task-card--completed .task-card__checkbox::before {
+  content: "✓";
+}
+
 .task-card__content h3 {
   margin: 0.65rem 0 0;
   font-size: 1.08rem;
@@ -702,6 +706,108 @@ a {
   background: linear-gradient(135deg, #8f2731 0%, #b83b42 100%);
 }
 
+.github-search-panel {
+  margin-top: 1.25rem;
+  padding: 1.35rem;
+}
+
+.github-search-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.github-search-form__button {
+  align-self: end;
+}
+
+.github-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.github-profile-card {
+  margin-top: 1.25rem;
+  padding: 1.4rem;
+}
+
+.github-profile-card--loading {
+  min-height: 260px;
+  position: relative;
+  overflow: hidden;
+}
+
+.github-profile-card--loading::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
+  transform: translateX(-100%);
+  animation: shimmer 1.4s infinite;
+}
+
+.github-profile-card__header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.github-profile-card__avatar {
+  width: 104px;
+  height: 104px;
+  border-radius: 28px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  box-shadow: 0 12px 26px rgba(24, 38, 63, 0.1);
+}
+
+.github-profile-card__identity h2 {
+  margin: 0.5rem 0 0.3rem;
+  font-size: 1.8rem;
+  letter-spacing: -0.04em;
+}
+
+.github-profile-card__identity p {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 1rem;
+}
+
+.github-profile-card__body {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.github-profile-card__row {
+  display: grid;
+  gap: 0.35rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.github-profile-card__row span {
+  color: var(--text-faint);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.github-profile-card__row p {
+  margin: 0;
+  color: var(--text-soft);
+}
+
+.github-profile-card__row a {
+  color: var(--accent);
+  font-weight: 600;
+  word-break: break-word;
+}
+
 @keyframes shimmer {
   100% {
     transform: translateX(100%);
@@ -711,6 +817,8 @@ a {
 @media (max-width: 1024px) {
   .hero,
   .filters-panel__controls,
+  .github-search-form,
+  .github-summary-grid,
   .summary-grid,
   .task-grid {
     grid-template-columns: 1fr;
@@ -743,6 +851,11 @@ a {
   .topbar__nav,
   .hero__actions {
     width: 100%;
+  }
+
+  .github-profile-card__header {
+    flex-direction: column;
+    align-items: start;
   }
 
   .topbar__link,

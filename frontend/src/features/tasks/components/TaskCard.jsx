@@ -12,9 +12,7 @@ export function TaskCard({ task, onDelete, onEdit, onToggleStatus, isUpdating })
             onChange={() => onToggleStatus(task)}
             disabled={isUpdating}
           />
-          <span className="task-card__checkbox" aria-hidden="true">
-            {task.is_completed ? '✓' : ''}
-          </span>
+          <span className="task-card__checkbox" aria-hidden="true" />
           <span className="sr-only">
             {task.is_completed ? 'Mark task as pending' : 'Mark task as completed'}
           </span>
