@@ -1,3 +1,5 @@
+const repositoryUrl = import.meta.env.VITE_REPOSITORY_URL || '#'
+
 export function AppTopbar({ activePage }) {
   return (
     <header className="topbar panel">
@@ -5,23 +7,30 @@ export function AppTopbar({ activePage }) {
         <span className="topbar__logo">TM</span>
         <div>
           <strong>Task Manager</strong>
-          <p>Laravel + React assessment project</p>
+          <p>Laravel 11 | React | MySQL</p>
         </div>
       </div>
       <nav className="topbar__nav" aria-label="Primary">
         <a
           className={`topbar__link${activePage === 'tasks' ? ' topbar__link--active' : ''}`}
           href="#tasks"
+          aria-current={activePage === 'tasks' ? 'page' : undefined}
         >
           Task Manager
         </a>
         <a
           className={`topbar__link${activePage === 'github-explorer' ? ' topbar__link--active' : ''}`}
           href="#github-explorer"
+          aria-current={activePage === 'github-explorer' ? 'page' : undefined}
         >
           GitHub Explorer
         </a>
-        <a className="topbar__link" href="#repository">
+        <a
+          className="topbar__link"
+          href={repositoryUrl}
+          target="_blank"
+          rel="noreferrer noopener"
+        >
           GitHub Repository
         </a>
       </nav>
