@@ -4,9 +4,10 @@ export function AppTopbar({
   activePage,
   subtitle = "Focus on what's next",
   sidebarContent = null,
+  variant = 'default',
 }) {
   return (
-    <aside className="sidebar panel">
+    <aside className={`sidebar sidebar--${variant} panel`}>
       <div className="sidebar__brand">
         <span className="sidebar__logo">TM</span>
         <div>

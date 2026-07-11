@@ -331,6 +331,7 @@ export function TaskDashboardPage() {
       <AppTopbar
         activePage="tasks"
         subtitle="Focus on what's next"
+        variant="tasks"
         sidebarContent={
           <>
             <section className="sidebar-panel sidebar-panel--progress">
@@ -398,6 +399,35 @@ export function TaskDashboardPage() {
           isRefreshing={isRefreshing}
           totalCount={pagination.total}
         />
+
+        <section className="mobile-task-controls" aria-label="Task filters and actions">
+          <div className="mobile-task-controls__filters" role="tablist" aria-label="Task status filters">
+            {sidebarFilters.map((filter) => (
+              <button
+                key={filter.value}
+                type="button"
+                role="tab"
+                aria-selected={statusFilter === filter.value}
+                className={`mobile-task-filter${statusFilter === filter.value ? ' mobile-task-filter--active' : ''}`}
+                onClick={() => {
+                  setStatusFilter(filter.value)
+                  setPagination((current) => ({
+                    ...current,
+                    current_page: 1,
+                  }))
+                }}
+              >
+                <span className={`sidebar-filter__dot sidebar-filter__dot--${filter.tone}`} />
+                <span>{filter.label}</span>
+                <strong>{filter.count}</strong>
+              </button>
+            ))}
+          </div>
+
+          <Button className="mobile-task-controls__button" onClick={openCreateDialog}>
+            + New task
+          </Button>
+        </section>
 
         {isInitialLoading ? (
           <section className="task-grid task-grid--loading" aria-label="Loading tasks">

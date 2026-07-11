@@ -62,6 +62,7 @@ export function GitHubExplorerPage() {
       <AppTopbar
         activePage="github-explorer"
         subtitle="Search public profiles"
+        variant="github"
         sidebarContent={
           <>
             <section className="sidebar-panel sidebar-panel--info">
