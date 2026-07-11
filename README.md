@@ -316,41 +316,81 @@ npm run build
 
 The screenshots below demonstrate the main task management workflows and GitHub API integration.
 
-### Task Manager Overview
+### Desktop View
+
+#### Task Manager Overview
 
 ![Task Manager Overview](assets/screenshots/task-manager-overview.png)
 
-### Add Task
+#### Add Task
 
 ![Add Task](assets/screenshots/task-manager-add-task.png)
 
-### Edit Task
+#### Edit Task
 
 ![Edit Task](assets/screenshots/task-manager-edit-task.png)
 
-### Delete Confirmation
+#### Delete Confirmation
 
 ![Delete Confirmation](assets/screenshots/task-manager-delete-confirmation.png)
 
-### Completed Task
+#### Completed Task
 
 ![Completed Task](assets/screenshots/task-manager-completed-task.png)
 
-### Task Search Results
+#### Task Search Results
 
 ![Task Search Results](assets/screenshots/task-manager-search-results.png)
 
-### GitHub Explorer Overview
+#### GitHub Explorer Overview
 
 ![GitHub Explorer Overview](assets/screenshots/github-explorer-overview.png)
 
-### GitHub User Search Result
+#### GitHub User Search Result
 
 ![GitHub User Search Result](assets/screenshots/github-explorer-search-result.png)
 
-### GitHub User Not Found
+#### GitHub User Not Found
 
 ![GitHub User Not Found](assets/screenshots/github-explorer-user-not-found.png)
+
+### Mobile View
+
+#### Task Manager Mobile Overview
+
+![Task Manager Mobile Overview](assets/screenshots/task-manager-overview-mobile.png)
+
+#### Add Task Mobile
+
+![Add Task Mobile](assets/screenshots/task-manager-add-task-mobile.png)
+
+#### Edit Task Mobile
+
+![Edit Task Mobile](assets/screenshots/task-manager-edit-task-mobile.png)
+
+#### Delete Confirmation Mobile
+
+![Delete Confirmation Mobile](assets/screenshots/task-manager-delete-confirmation-mobile.png)
+
+#### Completed Task Mobile
+
+![Completed Task Mobile](assets/screenshots/task-manager-completed-task-mobile.png)
+
+#### Task Search Results Mobile
+
+![Task Search Results Mobile](assets/screenshots/task-manager-search-results-mobile.png)
+
+#### GitHub Explorer Mobile Overview
+
+![GitHub Explorer Mobile Overview](assets/screenshots/github-explorer-overview-mobile.png)
+
+#### GitHub User Search Result Mobile
+
+![GitHub User Search Result Mobile](assets/screenshots/github-explorer-search-result-mobile.png)
+
+#### GitHub User Not Found Mobile
+
+![GitHub User Not Found Mobile](assets/screenshots/github-explorer-user-not-found-mobile.png)
 
 ## Security Notes
 
