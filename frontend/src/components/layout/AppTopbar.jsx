@@ -1,32 +1,37 @@
 const repositoryUrl = import.meta.env.VITE_REPOSITORY_URL || '#'
 
-export function AppTopbar({ activePage }) {
+export function AppTopbar({
+  activePage,
+  subtitle = "Focus on what's next",
+  sidebarContent = null,
+}) {
   return (
-    <header className="topbar panel">
-      <div className="topbar__brand">
-        <span className="topbar__logo">TM</span>
+    <aside className="sidebar panel">
+      <div className="sidebar__brand">
+        <span className="sidebar__logo">TM</span>
         <div>
           <strong>Task Manager</strong>
-          <p>Organize daily work and explore GitHub profiles.</p>
+          <p>{subtitle}</p>
         </div>
       </div>
-      <nav className="topbar__nav" aria-label="Primary">
+
+      <nav className="sidebar__nav" aria-label="Primary">
         <a
-          className={`topbar__link${activePage === 'tasks' ? ' topbar__link--active' : ''}`}
+          className={`sidebar__link${activePage === 'tasks' ? ' sidebar__link--active' : ''}`}
           href="#tasks"
           aria-current={activePage === 'tasks' ? 'page' : undefined}
         >
           Task Manager
         </a>
         <a
-          className={`topbar__link${activePage === 'github-explorer' ? ' topbar__link--active' : ''}`}
+          className={`sidebar__link${activePage === 'github-explorer' ? ' sidebar__link--active' : ''}`}
           href="#github-explorer"
           aria-current={activePage === 'github-explorer' ? 'page' : undefined}
         >
           GitHub Explorer
         </a>
         <a
-          className="topbar__link"
+          className="sidebar__link"
           href={repositoryUrl}
           target="_blank"
           rel="noreferrer noopener"
@@ -34,6 +39,8 @@ export function AppTopbar({ activePage }) {
           GitHub Repository
         </a>
       </nav>
-    </header>
+
+      {sidebarContent ? <div className="sidebar__content">{sidebarContent}</div> : null}
+    </aside>
   )
 }

@@ -17,14 +17,14 @@ export function TaskCard({ task, onDelete, onEdit, onToggleStatus, isUpdating })
             {task.is_completed ? 'Mark task as pending' : 'Mark task as completed'}
           </span>
         </label>
+        <StatusBadge isCompleted={task.is_completed} />
+      </div>
 
-        <div className="task-card__content">
-          <StatusBadge isCompleted={task.is_completed} />
-          <h3>{task.title}</h3>
-          <p className="task-card__description">
-            {task.description || 'No description provided for this task.'}
-          </p>
-        </div>
+      <div className="task-card__content">
+        <h3>{task.title}</h3>
+        <p className="task-card__description">
+          {task.description || 'No extra notes were added for this task.'}
+        </p>
       </div>
 
       <footer className="task-card__footer">
@@ -34,7 +34,7 @@ export function TaskCard({ task, onDelete, onEdit, onToggleStatus, isUpdating })
             Edit
           </Button>
           <Button variant="secondary" onClick={() => onToggleStatus(task)} disabled={isUpdating}>
-            {task.is_completed ? 'Mark pending' : 'Mark complete'}
+            {task.is_completed ? 'Mark pending' : 'Mark done'}
           </Button>
           <Button variant="danger" onClick={() => onDelete(task)}>
             Delete

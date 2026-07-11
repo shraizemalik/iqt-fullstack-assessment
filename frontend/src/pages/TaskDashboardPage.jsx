@@ -6,7 +6,6 @@ import { EmptyState } from '../components/ui/EmptyState'
 import { NotificationList } from '../components/ui/NotificationList'
 import { Pagination } from '../components/ui/Pagination'
 import { DeleteTaskDialog } from '../features/tasks/components/DeleteTaskDialog'
-import { SummaryCards } from '../features/tasks/components/SummaryCards'
 import { TaskFilters } from '../features/tasks/components/TaskFilters'
 import { TaskFormDialog } from '../features/tasks/components/TaskFormDialog'
 import { TaskList } from '../features/tasks/components/TaskList'
@@ -128,6 +127,23 @@ export function TaskDashboardPage() {
 
     return `Showing ${pagination.from}-${pagination.to} of ${pagination.total} tasks`
   }, [pagination.from, pagination.to, pagination.total])
+
+  const completionRate = useMemo(() => {
+    if (summary.total === 0) {
+      return 0
+    }
+
+    return Math.round((summary.completed / summary.total) * 100)
+  }, [summary.completed, summary.total])
+
+  const sidebarFilters = useMemo(
+    () => [
+      { label: 'All tasks', value: 'all', count: summary.total, tone: 'all' },
+      { label: 'Pending', value: 'pending', count: summary.pending, tone: 'pending' },
+      { label: 'Completed', value: 'completed', count: summary.completed, tone: 'completed' },
+    ],
+    [summary.completed, summary.pending, summary.total],
+  )
 
   const openCreateDialog = () => {
     setFormMode('create')
@@ -309,76 +325,114 @@ export function TaskDashboardPage() {
   }
 
   return (
-    <main className="app-shell">
+    <main className="app-shell app-shell--board">
       <NotificationList notifications={notifications} onDismiss={dismissNotification} />
 
-      <AppTopbar activePage="tasks" />
+      <AppTopbar
+        activePage="tasks"
+        subtitle="Focus on what's next"
+        sidebarContent={
+          <>
+            <section className="sidebar-panel sidebar-panel--progress">
+              <div
+                className="progress-ring"
+                style={{ '--progress-value': `${completionRate}%` }}
+                aria-hidden="true"
+              >
+                <div className="progress-ring__inner">
+                  <strong>{completionRate}%</strong>
+                </div>
+              </div>
+              <div className="sidebar-panel__content">
+                <span className="eyebrow">Progress</span>
+                <strong>
+                  {summary.completed} of {summary.total} done
+                </strong>
+              </div>
+            </section>
 
-      <section id="tasks" className="hero panel">
-        <div className="hero__content">
-          <span className="eyebrow">Overview</span>
-          <h1>Task Management System</h1>
-          <p>Organize, track, and complete your daily tasks.</p>
-        </div>
-        <div className="hero__actions">
-          <div className="hero__status">
-            <span>Current filter</span>
-            <strong>{statusFilter === 'all' ? 'All tasks' : `${statusFilter} tasks`}</strong>
-          </div>
-          <Button onClick={openCreateDialog}>Add new task</Button>
-        </div>
-      </section>
+            <section className="sidebar-section">
+              <span className="eyebrow">Filter</span>
+              <div className="sidebar-filter-list" role="tablist" aria-label="Task filters">
+                {sidebarFilters.map((filter) => (
+                  <button
+                    key={filter.value}
+                    type="button"
+                    role="tab"
+                    aria-selected={statusFilter === filter.value}
+                    className={`sidebar-filter${statusFilter === filter.value ? ' sidebar-filter--active' : ''}`}
+                    onClick={() => {
+                      setStatusFilter(filter.value)
+                      setPagination((current) => ({
+                        ...current,
+                        current_page: 1,
+                      }))
+                    }}
+                  >
+                    <span className={`sidebar-filter__dot sidebar-filter__dot--${filter.tone}`} />
+                    <span>{filter.label}</span>
+                    <strong>{filter.count}</strong>
+                  </button>
+                ))}
+              </div>
+            </section>
 
-      <SummaryCards summary={summary} />
-
-      <TaskFilters
-        resultsLabel={resultsLabel}
-        searchValue={searchInput}
-        selectedStatus={statusFilter}
-        onSearchChange={setSearchInput}
-        onStatusChange={(value) => {
-          setStatusFilter(value)
-          setPagination((current) => ({
-            ...current,
-            current_page: 1,
-          }))
-        }}
-        isRefreshing={isRefreshing}
+            <Button className="sidebar__cta" onClick={openCreateDialog}>
+              + New task
+            </Button>
+          </>
+        }
       />
 
-      {isInitialLoading ? (
-        <section className="task-grid task-grid--loading" aria-label="Loading tasks">
-          {Array.from({ length: 6 }).map((_, index) => (
-            <div key={index} className="task-card task-card--skeleton" />
-          ))}
+      <div className="board-main">
+        <section id="tasks" className="board-hero">
+          <span className="eyebrow">Your board</span>
+          <h1>Today's work, sorted.</h1>
+          <p>Capture, track, and finish one card at a time.</p>
         </section>
-      ) : tasks.length === 0 ? (
-        <EmptyState
-          title="No tasks match your current view"
-          description="Try a different search term, switch filters, or create a new task to get started."
-          action={<Button onClick={openCreateDialog}>Create your first task</Button>}
+
+        <TaskFilters
+          resultsLabel={resultsLabel}
+          searchValue={searchInput}
+          onSearchChange={setSearchInput}
+          isRefreshing={isRefreshing}
+          totalCount={pagination.total}
         />
-      ) : (
-        <>
-          <TaskList
-            tasks={tasks}
-            onDelete={handleDeleteRequest}
-            onEdit={openEditDialog}
-            onToggleStatus={handleToggleStatus}
-            updatingTaskId={updatingTaskId}
+
+        {isInitialLoading ? (
+          <section className="task-grid task-grid--loading" aria-label="Loading tasks">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <div key={index} className="task-card task-card--skeleton" />
+            ))}
+          </section>
+        ) : tasks.length === 0 ? (
+          <EmptyState
+            title="No tasks match this view"
+            description="Try another search, switch the filter, or add a new task to keep the board moving."
+            action={<Button onClick={openCreateDialog}>Create a task</Button>}
           />
-          <Pagination
-            currentPage={pagination.current_page}
-            lastPage={pagination.last_page}
-            onPageChange={(page) =>
-              setPagination((current) => ({
-                ...current,
-                current_page: page,
-              }))
-            }
-          />
-        </>
-      )}
+        ) : (
+          <>
+            <TaskList
+              tasks={tasks}
+              onDelete={handleDeleteRequest}
+              onEdit={openEditDialog}
+              onToggleStatus={handleToggleStatus}
+              updatingTaskId={updatingTaskId}
+            />
+            <Pagination
+              currentPage={pagination.current_page}
+              lastPage={pagination.last_page}
+              onPageChange={(page) =>
+                setPagination((current) => ({
+                  ...current,
+                  current_page: page,
+                }))
+              }
+            />
+          </>
+        )}
+      </div>
 
       <TaskFormDialog
         isOpen={isFormOpen}
